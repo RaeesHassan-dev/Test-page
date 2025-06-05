@@ -37,11 +37,21 @@
       flex-grow: 1;
       padding: 2rem;
     }
+    button.logout {
+      background-color: #fa375e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Welcome, <span id="clientName"></span></h1>
+    <button class="logout" onclick="handleLogout()">Exit</button>
   </header>
   <main>
     <p>You are now connected with our Client Success team. You can start a chat with us from the Resource Center at the lower right of your screen.</p>
@@ -52,19 +62,25 @@
   <script async type="module" src="https://us-central.dx.dialpad.com/dxclient/dist/dialpad-chatbot.es.js"></script>
 
   <script>
-    // Grab raw values
     const rawUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-    // ✅ Decode in case they were stored with URL-encoding
+    // Force-decode function
+    function forceDecode(value) {
+      try {
+        return decodeURIComponent(decodeURIComponent(value ?? ""));
+      } catch (e) {
+        return value ?? "";
+      }
+    }
+
     const user = {
-      name: decodeURIComponent(rawUser.name ?? ""),
-      email: decodeURIComponent(rawUser.email ?? ""),
-      oid: decodeURIComponent(rawUser.oid ?? "")
+      name: forceDecode(rawUser.name),
+      email: forceDecode(rawUser.email),
+      oid: forceDecode(rawUser.oid)
     };
 
     document.getElementById("clientName").textContent = user.name || "Client";
 
-    // ✅ Use clean variables (unencoded)
     const wfVars = [
       `custname=${user.name}`,
       `custemail=${user.email}`,
@@ -97,6 +113,12 @@
     `;
     wrapper.appendChild(fab);
     document.body.appendChild(wrapper);
+
+    // Clear localStorage and return to login
+    function handleLogout() {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>
