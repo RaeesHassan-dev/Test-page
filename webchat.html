@@ -37,21 +37,11 @@
       flex-grow: 1;
       padding: 2rem;
     }
-    button.logout {
-      background-color: #fa375e;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
   </style>
 </head>
 <body>
   <header>
     <h1>Welcome, <span id="clientName"></span></h1>
-    <button class="logout" onclick="handleLogout()">Exit</button>
   </header>
   <main>
     <p>You are now connected with our Client Success team. You can start a chat with us from the Resource Center at the lower right of your screen.</p>
@@ -64,7 +54,7 @@
   <script>
     const rawUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-    // Force-decode function
+    // Force decode in case values are already URL-encoded
     function forceDecode(value) {
       try {
         return decodeURIComponent(decodeURIComponent(value ?? ""));
@@ -113,12 +103,6 @@
     `;
     wrapper.appendChild(fab);
     document.body.appendChild(wrapper);
-
-    // Clear localStorage and return to login
-    function handleLogout() {
-      localStorage.removeItem("user");
-      window.location.href = "index.html";
-    }
   </script>
 </body>
 </html>
