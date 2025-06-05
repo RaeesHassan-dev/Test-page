@@ -15,13 +15,13 @@ function fullyDecode(value) {
 const user = {
   name: fullyDecode(rawUser.name),
   email: fullyDecode(rawUser.email),
-  oid: fullyDecode(rawUser.oid)
+  oid: fullyDecode(rawUser.phone)
 };
 
 const wfVars = [
   `custname=${user.name}`,
   `custemail=${user.email}`,
-  `custphone=${user.oid}`
+  `custphone=${user.phone}`
 ].join(",");
 
 const fab = document.createElement("img");
