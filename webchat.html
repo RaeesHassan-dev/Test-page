@@ -15,10 +15,7 @@ function fullyDecode(value) {
 const user = {
   name: fullyDecode(rawUser.name),
   email: fullyDecode(rawUser.email),
-  oid: fullyDecode(rawUser.oid),
-  planType: fullyDecode(rawUser.planType),
-  accountID: fullyDecode(rawUser.accountID),
-  accountStatus: fullyDecode(rawUser.accountStatus)
+  oid: fullyDecode(rawUser.oid)
 };
 
 const wfVars = [
