@@ -44,11 +44,14 @@
   <script>
     function handleLogin(e) {
       e.preventDefault();
+
+      // ✅ No encoding here
       const user = {
         name: document.getElementById("name").value.trim(),
         email: document.getElementById("email").value.trim(),
         oid: document.getElementById("oid").value.trim()
       };
+
       localStorage.setItem("user", JSON.stringify(user));
       window.location.href = "webchat.html";
     }
