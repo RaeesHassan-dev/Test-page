@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Client Portal</title>
   <style>
     :root {
@@ -52,14 +52,23 @@
   <script async type="module" src="https://us-central.dx.dialpad.com/dxclient/dist/dialpad-chatbot.es.js"></script>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    // Grab raw values
+    const rawUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+    // ✅ Decode in case they were stored with URL-encoding
+    const user = {
+      name: decodeURIComponent(rawUser.name ?? ""),
+      email: decodeURIComponent(rawUser.email ?? ""),
+      oid: decodeURIComponent(rawUser.oid ?? "")
+    };
+
     document.getElementById("clientName").textContent = user.name || "Client";
 
-    // ✅ Use plain text (not URL encoded)
+    // ✅ Use clean variables (unencoded)
     const wfVars = [
-      `custname=${user.name ?? ""}`,
-      `custemail=${user.email ?? ""}`,
-      `oid=${user.oid ?? ""}`
+      `custname=${user.name}`,
+      `custemail=${user.email}`,
+      `oid=${user.oid}`
     ].join(",");
 
     const fab = document.createElement("img");
