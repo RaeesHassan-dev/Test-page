@@ -55,10 +55,11 @@
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     document.getElementById("clientName").textContent = user.name || "Client";
 
+    // ✅ Use plain text (not URL encoded)
     const wfVars = [
-      `custname=${encodeURIComponent(user.name || "")}`,
-      `custemail=${encodeURIComponent(user.email || "")}`,
-      `oid=${encodeURIComponent(user.oid || "")}`
+      `custname=${user.name ?? ""}`,
+      `custemail=${user.email ?? ""}`,
+      `oid=${user.oid ?? ""}`
     ].join(",");
 
     const fab = document.createElement("img");
