@@ -37,11 +37,21 @@
       flex-grow: 1;
       padding: 2rem;
     }
+    button.logout {
+      background-color: #fa375e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Welcome, <span id="clientName"></span></h1>
+    <button class="logout" onclick="handleLogout()">Exit</button>
   </header>
   <main>
     <p>You are now connected with our Client Success team. You can start a chat with us from the Resource Center at the lower right of your screen.</p>
@@ -54,19 +64,25 @@
   <script>
     const rawUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-    // Force decode in case values are already URL-encoded
-    function forceDecode(value) {
+    // ✅ Double-decode function for robustness
+    function fullyDecode(value) {
+      let decoded = value ?? "";
+      let prev;
       try {
-        return decodeURIComponent(decodeURIComponent(value ?? ""));
+        do {
+          prev = decoded;
+          decoded = decodeURIComponent(decoded);
+        } while (decoded !== prev);
       } catch (e) {
-        return value ?? "";
+        // fallback if malformed
       }
+      return decoded;
     }
 
     const user = {
-      name: forceDecode(rawUser.name),
-      email: forceDecode(rawUser.email),
-      oid: forceDecode(rawUser.oid)
+      name: fullyDecode(rawUser.name),
+      email: fullyDecode(rawUser.email),
+      oid: fullyDecode(rawUser.oid)
     };
 
     document.getElementById("clientName").textContent = user.name || "Client";
@@ -103,6 +119,11 @@
     `;
     wrapper.appendChild(fab);
     document.body.appendChild(wrapper);
+
+    function handleLogout() {
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>
